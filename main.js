@@ -4,7 +4,7 @@ var inquirer = require('inquirer');
 
 var basicCardsArray = [];
 var clozeCardsArray = [];
-var count  = 1;
+var count  = 0;
 
 BasicCard.prototype.displayInfo = function (x) {
 	console.log("BASIC CARD " + x + "\n" +"Front: " + this.front + "\nBack: " + this.back + "\n");
@@ -26,13 +26,13 @@ function startProgram () {
 	{ 	
 		type: 'rawlist',
 		name: 'action',
-		message: 'Which type of flashcard to you want to use?',
-		choices:["Basic Flash Cards", "Cloze Flash Cards"]
+		message: 'Which type of flashcard to you want to create?',
+		choices:["Basic Flashcards", "Cloze Flashcards"]
 	}
 	]).then(function(answer) {
         // console.log(answer);
   
-	  	if (answer.action === "Cloze Flash Cards"){
+	  	if (answer.action === "Cloze Flashcards"){
 	        clozeFunction();
 	    } else {
 	        basicFunction();
@@ -41,7 +41,7 @@ function startProgram () {
 };
 
 function clozeFunction() {
-  if (count < 3) {
+  if (count < 5) {
   		console.log("CREATE NEW CLOZE CARD " + count);
 		inquirer.prompt([
 		  {
@@ -51,7 +51,14 @@ function clozeFunction() {
 		  }, {
 		  	type: "input",
 		  	name: "cloze",
-		  	message: "What is the cloze portion of the statement? "
+		  	message: "What is the cloze portion of the statement? ",
+		   //  validate: function(text, cloze) {
+		   //  	if (text.search(cloze) < 0) {
+					// console.log('ERROR: "' + this.cloze + '" does not appear in "' + this.text + '."\n');
+					// return false;
+		   //  	} 
+		   //  	return true;
+		   //  }
 		  }
 		  ]).then(function(answer){
 		  	var newClozeCard = new ClozeCard(
@@ -67,12 +74,13 @@ function clozeFunction() {
 	} else {
 	    for (var x = 0; x < clozeCardsArray.length; x++) {
 	      clozeCardsArray[x].displayInfo(x);
-    }
+    	}
+      startProgram();
   }
 };
 
 function basicFunction() {
-	if (count < 3) {
+	if (count < 5) {
   		console.log("CREATE NEW BASIC CARD " + count);
 		inquirer.prompt([
 		  {
@@ -96,9 +104,10 @@ function basicFunction() {
 		});
 
 	} else {
-    for (var x = 0; x < basicCardsArray.length; x++) {
-      basicCardsArray[x].displayInfo(x);
-    }
+	    for (var x = 0; x < basicCardsArray.length; x++) {
+	      basicCardsArray[x].displayInfo(x);
+	    }
+ 	startProgram();
   }
 };
 
