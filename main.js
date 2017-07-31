@@ -61,14 +61,20 @@ function clozeFunction() {
 		   //  }
 		  }
 		  ]).then(function(answer){
-		  	var newClozeCard = new ClozeCard(
+		  	if (answer.text.includes(answer.cloze)) {
+
+		  	 	var newClozeCard = new ClozeCard(
 		        answer.text,
 		        answer.cloze);
       		
-      		clozeCardsArray.push(newClozeCard);
+      			clozeCardsArray.push(newClozeCard);
 
-			count++;
-			clozeFunction();
+				count++;
+				clozeFunction();
+			} else {
+				console.log ('ERROR: "' + answer.cloze + '" does not appear in the statement "' + answer.text + '." Try again.\n');
+				clozeFunction();
+			}
 		});
 
 	} else {
